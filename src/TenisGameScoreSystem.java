@@ -10,19 +10,19 @@ public class TenisGameScoreSystem {
     }
 
     public String decideWinner(){
-        if(isDeuce())
-            tiebreaker();
+        if(decideIfIsDeuce())
+            decideWhoWonTheDeuce();
         else
-            if (anyPlayerWas4Points())
+            if (decideIfAnyPlayerWas4Points())
                 showPlayerWithMorePoints();
-        return notDecided();
+        return showMessageThatTheGameHasNotYetBeenDefined();
     }
 
-    public String gameScore(){
-        return "Player 1: " + translatePoints(firstPlayerScore) + ", Player 2: " + translatePoints(secondPlayerScore);
+    public String showGameScore(){
+        return "Player 1: " + translatePointsToTenisSystem(firstPlayerScore) + ", Player 2: " + translatePointsToTenisSystem(secondPlayerScore);
     }
 
-    public String tiebreaker() {
+    public String decideWhoWonTheDeuce() {
         if(abs(firstPlayerScore - secondPlayerScore) == 2)
             return showPlayerWithMorePoints();
         return "The game is not decided yet.";
@@ -35,15 +35,15 @@ public class TenisGameScoreSystem {
         return msg + "2";
     }
 
-    public String notDecided () {
+    public String showMessageThatTheGameHasNotYetBeenDefined() {
         return "The game is not decided yet.";
     }
 
-    public boolean isDeuce() {
+    public boolean decideIfIsDeuce() {
         return (firstPlayerScore == secondPlayerScore) && firstPlayerScore >= 3;
     }
 
-    public boolean anyPlayerWas4Points() {
+    public boolean decideIfAnyPlayerWas4Points() {
         return firstPlayerScore == 4 || secondPlayerScore == 4;
     }
 
@@ -65,7 +65,7 @@ public class TenisGameScoreSystem {
         this.secondPlayerScore = secondPlayerScore;
     }
 
-    public String translatePoints(int playerScore){
+    public String translatePointsToTenisSystem(int playerScore){
         String[] pointsTable = new String[] {"0", "15", "30", "40"};
         if (playerScore > 3)
             return "40";
