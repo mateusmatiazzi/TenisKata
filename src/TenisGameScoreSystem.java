@@ -11,10 +11,11 @@ public class TenisGameScoreSystem {
 
     public String decideWinner(){
         if(decideIfIsDeuce())
-            decideWhoWonTheDeuce();
-        else
-            if (decideIfAnyPlayerWas4Points())
-                showPlayerWithMorePoints();
+            return decideWhoWonTheDeuce();
+        else{
+            if (decideIfTheGameIfOver())
+                return showPlayerWithMorePoints();
+        }
         return showMessageThatTheGameHasNotYetBeenDefined();
     }
 
@@ -23,7 +24,7 @@ public class TenisGameScoreSystem {
     }
 
     public String decideWhoWonTheDeuce() {
-        if(abs(firstPlayerScore - secondPlayerScore) == 2)
+        if(abs(firstPlayerScore - secondPlayerScore) >= 2)
             return showPlayerWithMorePoints();
         return "The game is not decided yet.";
     }
@@ -40,10 +41,10 @@ public class TenisGameScoreSystem {
     }
 
     public boolean decideIfIsDeuce() {
-        return (firstPlayerScore == secondPlayerScore) && firstPlayerScore >= 3;
+        return secondPlayerScore >=3 && firstPlayerScore >= 3;
     }
 
-    public boolean decideIfAnyPlayerWas4Points() {
+    public boolean decideIfTheGameIfOver() {
         return firstPlayerScore == 4 || secondPlayerScore == 4;
     }
 

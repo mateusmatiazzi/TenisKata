@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -6,11 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TenisGameScoreSystemTest {
 
     TenisGameScoreSystem tenisGameScoreSystemTest = new TenisGameScoreSystem();
-
-    @BeforeEach
-    public void mustResetThePlayersScore(){
-        tenisGameScoreSystemTest.resetGameScore();
-    }
 
     @Test
     public void mustAddAPointToThePlayer(){
@@ -24,15 +18,19 @@ class TenisGameScoreSystemTest {
 
     @Test
     void mustDecideTheWinnerWith4Points() {
-        tenisGameScoreSystemTest.setPlayersScore(0, 0);
-        assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWinner());
         tenisGameScoreSystemTest.setPlayersScore(0, 4);
+        assertEquals(tenisGameScoreSystemTest.showPlayerWithMorePoints(), tenisGameScoreSystemTest.decideWinner());
+        tenisGameScoreSystemTest.setPlayersScore(8, 6);
+        assertEquals(tenisGameScoreSystemTest.showPlayerWithMorePoints(), tenisGameScoreSystemTest.decideWinner());
+    }
+
+    @Test
+    void mustDecideIfTheGameHasNotYetBennDefined(){
+        tenisGameScoreSystemTest.setPlayersScore(0, 0);
         assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWinner());
         tenisGameScoreSystemTest.setPlayersScore(4, 3);
         assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWinner());
         tenisGameScoreSystemTest.setPlayersScore(5, 5);
-        assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWinner());
-        tenisGameScoreSystemTest.setPlayersScore(8, 6);
         assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWinner());
     }
 
@@ -65,6 +63,8 @@ class TenisGameScoreSystemTest {
         assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWhoWonTheDeuce());
         tenisGameScoreSystemTest.setPlayersScore(4, 6);
         assertEquals(tenisGameScoreSystemTest.showPlayerWithMorePoints(), tenisGameScoreSystemTest.decideWhoWonTheDeuce());
+        tenisGameScoreSystemTest.setPlayersScore(4, 8);
+        assertEquals(tenisGameScoreSystemTest.showPlayerWithMorePoints(), tenisGameScoreSystemTest.decideWhoWonTheDeuce());
     }
 
     @Test
@@ -90,10 +90,10 @@ class TenisGameScoreSystemTest {
     void mustDecideIfAnyPlayerWas4Points() {
         for(int i=0;i<3;i++) {
             tenisGameScoreSystemTest.addScoreToFirstPlayer();
-            assertFalse(tenisGameScoreSystemTest.decideIfAnyPlayerWas4Points());
+            assertFalse(tenisGameScoreSystemTest.decideIfTheGameIfOver());
         }
         tenisGameScoreSystemTest.addScoreToFirstPlayer();
-        assertTrue(tenisGameScoreSystemTest.decideIfAnyPlayerWas4Points());
+        assertTrue(tenisGameScoreSystemTest.decideIfTheGameIfOver());
     }
 
     @Test
