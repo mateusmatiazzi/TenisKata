@@ -1,4 +1,6 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,40 +12,37 @@ class TenisGameScoreSystemTest {
     public void mustAddAPointToThePlayer(){
         for(int i=1;i<4;i++) {
             tenisGameScoreSystemTest.addScoreToFirstPlayer();
+
             assertEquals(i, tenisGameScoreSystemTest.firstPlayerScore);
+
             tenisGameScoreSystemTest.addScoreToSecondPlayer();
+
             assertEquals(i, tenisGameScoreSystemTest.secondPlayerScore);
         }
     }
 
-    @Test
-    void mustDecideTheWinnerWith4Points() {
-        tenisGameScoreSystemTest.setPlayersScore(0, 4);
-        assertEquals(tenisGameScoreSystemTest.showPlayerWithMorePoints(), tenisGameScoreSystemTest.decideWinner());
-        tenisGameScoreSystemTest.setPlayersScore(8, 6);
+    @ParameterizedTest
+    @CsvSource({"0, 4", "8, 6"})
+    void mustDecideTheWinnerWith4Points(int firstPlayerScore, int secondPlayerScore) {
+        tenisGameScoreSystemTest.setPlayersScore(firstPlayerScore, secondPlayerScore);
+
         assertEquals(tenisGameScoreSystemTest.showPlayerWithMorePoints(), tenisGameScoreSystemTest.decideWinner());
     }
 
-    @Test
-    void mustDecideIfTheGameHasNotYetBennDefined(){
-        tenisGameScoreSystemTest.setPlayersScore(0, 0);
-        assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWinner());
-        tenisGameScoreSystemTest.setPlayersScore(4, 3);
-        assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWinner());
-        tenisGameScoreSystemTest.setPlayersScore(5, 5);
+    @ParameterizedTest
+    @CsvSource({"0, 0", "4, 3", "5, 5"})
+    void mustDecideIfTheGameHasNotYetBennDefined(int firstPlayerScore, int secondPlayerScore){
+        tenisGameScoreSystemTest.setPlayersScore(firstPlayerScore, secondPlayerScore);
+
         assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWinner());
     }
 
-    @Test
-    void mustShowTheGameScore() {
-        tenisGameScoreSystemTest.setPlayersScore(0, 0);
-        assertEquals("Player 1: 0, Player 2: 0", tenisGameScoreSystemTest.showGameScore());
-        tenisGameScoreSystemTest.setPlayersScore(0, 2);
-        assertEquals("Player 1: 0, Player 2: 30", tenisGameScoreSystemTest.showGameScore());
-        tenisGameScoreSystemTest.setPlayersScore(2, 3);
-        assertEquals("Player 1: 30, Player 2: 40", tenisGameScoreSystemTest.showGameScore());
-        tenisGameScoreSystemTest.setPlayersScore(6, 5);
-        assertEquals("Player 1: 40, Player 2: 40", tenisGameScoreSystemTest.showGameScore());
+    @ParameterizedTest
+    @CsvSource({"0, 0, Player 1: 0 Player 2: 0", "0, 2, Player 1: 0 Player 2: 30", "2, 3, Player 1: 30 Player 2: 40", "6, 5, Player 1: 40 Player 2: 40"})
+    void mustShowTheGameScore(int firstPlayerScore, int secondPlayerScore, String result) {
+        tenisGameScoreSystemTest.setPlayersScore(firstPlayerScore, secondPlayerScore);
+
+        assertEquals(result, tenisGameScoreSystemTest.showGameScore());
     }
 
     @Test
@@ -55,34 +54,40 @@ class TenisGameScoreSystemTest {
         }
     }
 
-    @Test
-    void mustDecideIfTheDouceIsOverAndWhoIsTheWinner() {
-        tenisGameScoreSystemTest.setPlayersScore(4, 4);
+    @ParameterizedTest
+    @CsvSource({"4, 4", "4, 5"})
+    void mustDecideIfTheDouceIsNotOverYet(int firstPlayerScore, int secondPlayerScore) {
+        tenisGameScoreSystemTest.setPlayersScore(firstPlayerScore, secondPlayerScore);
+
         assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWhoWonTheDeuce());
-        tenisGameScoreSystemTest.setPlayersScore(4, 5);
-        assertEquals(tenisGameScoreSystemTest.showMessageThatTheGameHasNotYetBeenDefined(), tenisGameScoreSystemTest.decideWhoWonTheDeuce());
-        tenisGameScoreSystemTest.setPlayersScore(4, 6);
-        assertEquals(tenisGameScoreSystemTest.showPlayerWithMorePoints(), tenisGameScoreSystemTest.decideWhoWonTheDeuce());
-        tenisGameScoreSystemTest.setPlayersScore(4, 8);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"4, 6", "4, 8"})
+    void mustDecideWhoIsTheWinnerOfTheDouce(int firstPlayerScore, int secondPlayerScore) {
+        tenisGameScoreSystemTest.setPlayersScore(firstPlayerScore, secondPlayerScore);
+
         assertEquals(tenisGameScoreSystemTest.showPlayerWithMorePoints(), tenisGameScoreSystemTest.decideWhoWonTheDeuce());
     }
 
     @Test
     void mustDecideWhoWonTheGame() {
         String msg = "The winner is player number ";
+
         tenisGameScoreSystemTest.setPlayersScore(4, 0);
+
         assertEquals(msg+"1", tenisGameScoreSystemTest.showPlayerWithMorePoints());
+
         tenisGameScoreSystemTest.setPlayersScore(0, 4);
+
         assertEquals(msg+"2", tenisGameScoreSystemTest.showPlayerWithMorePoints());
     }
 
-    @Test
-    void mustDecideIfIsADouce() {
-        tenisGameScoreSystemTest.setPlayersScore(2, 3);
-        assertFalse(tenisGameScoreSystemTest.decideIfIsDeuce());
-        tenisGameScoreSystemTest.setPlayersScore(0, 0);
-        assertFalse(tenisGameScoreSystemTest.decideIfIsDeuce());
-        tenisGameScoreSystemTest.setPlayersScore(3, 3);
+    @ParameterizedTest
+    @CsvSource({"3, 3", "5, 5", "6, 7", "8, 8"})
+    void mustDecideIfIsADouce(int firstPlayerScore, int secondPlayerScore) {
+        tenisGameScoreSystemTest.setPlayersScore(firstPlayerScore, secondPlayerScore);
+
         assertTrue(tenisGameScoreSystemTest.decideIfIsDeuce());
     }
 
@@ -90,9 +95,11 @@ class TenisGameScoreSystemTest {
     void mustDecideIfAnyPlayerWas4Points() {
         for(int i=0;i<3;i++) {
             tenisGameScoreSystemTest.addScoreToFirstPlayer();
+
             assertFalse(tenisGameScoreSystemTest.decideIfTheGameIfOver());
         }
         tenisGameScoreSystemTest.addScoreToFirstPlayer();
+
         assertTrue(tenisGameScoreSystemTest.decideIfTheGameIfOver());
     }
 
@@ -100,6 +107,7 @@ class TenisGameScoreSystemTest {
     void mustResetTheGameScore() {
         tenisGameScoreSystemTest.setPlayersScore(1, 1);
         tenisGameScoreSystemTest.resetGameScore();
+
         assertEquals(0, tenisGameScoreSystemTest.firstPlayerScore);
         assertEquals(0, tenisGameScoreSystemTest.secondPlayerScore);
     }

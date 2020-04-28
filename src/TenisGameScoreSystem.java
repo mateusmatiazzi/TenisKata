@@ -20,7 +20,7 @@ public class TenisGameScoreSystem {
     }
 
     public String showGameScore(){
-        return "Player 1: " + translatePointsToTenisSystem(firstPlayerScore) + ", Player 2: " + translatePointsToTenisSystem(secondPlayerScore);
+        return "Player 1: " + translatePointsToTenisSystem(firstPlayerScore) + " Player 2: " + translatePointsToTenisSystem(secondPlayerScore);
     }
 
     public String decideWhoWonTheDeuce() {
