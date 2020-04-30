@@ -3,6 +3,7 @@ import static java.lang.Math.abs;
 public class TenisGameScoreSystem {
     int firstPlayerScore;
     int secondPlayerScore;
+    String gameScore = "";
 
     public TenisGameScoreSystem() {
         firstPlayerScore = 0;
@@ -13,17 +14,17 @@ public class TenisGameScoreSystem {
         if(decideIfIsDeuce())
             return decideWhoWonTheDeuce();
         else{
-            if (decideIfTheGameIfOver())
+            if (decideIfTheGameIsOver())
                 return showPlayerWithMorePoints();
         }
         return showMessageThatTheGameHasNotYetBeenDefined();
     }
 
-    public String showGameScore(){
-        return "Player 1: " + translatePointsToTenisSystem(firstPlayerScore) + " Player 2: " + translatePointsToTenisSystem(secondPlayerScore);
+    public void updateGameScore(){
+        gameScore = "Player 1: " + translatePointsToTenisSystem(firstPlayerScore) + " Player 2: " + translatePointsToTenisSystem(secondPlayerScore);
     }
 
-    public String decideWhoWonTheDeuce() {
+    private String decideWhoWonTheDeuce() {
         if(abs(firstPlayerScore - secondPlayerScore) >= 2)
             return showPlayerWithMorePoints();
         return "The game is not decided yet.";
@@ -36,15 +37,15 @@ public class TenisGameScoreSystem {
         return msg + "2";
     }
 
-    public String showMessageThatTheGameHasNotYetBeenDefined() {
+    private String showMessageThatTheGameHasNotYetBeenDefined() {
         return "The game is not decided yet.";
     }
 
-    public boolean decideIfIsDeuce() {
+    private boolean decideIfIsDeuce() {
         return secondPlayerScore >=3 && firstPlayerScore >= 3;
     }
 
-    public boolean decideIfTheGameIfOver() {
+    private boolean decideIfTheGameIsOver() {
         return firstPlayerScore == 4 || secondPlayerScore == 4;
     }
 
